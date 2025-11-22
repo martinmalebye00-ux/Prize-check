@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Prize Check — Is that prize real?</title>
+  <meta name="description" content="Think you won money? Quickly check whether the message is real and learn the safe steps to claim legitimate prizes." />
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#ffffff; --accent:#0b63d6; --muted:#6b7280;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    }
+    body{margin:0;background:var(--bg);color:#111;line-height:1.5}
+    header{background:linear-gradient(90deg,#eef5ff,#f7fbff);padding:28px 18px;text-align:center}
+    .container{max-width:880px;margin:18px auto;padding:0 18px}
+    h1{margin:.2rem 0;font-size:clamp(1.4rem,2.6vw,2rem)}
+    p.lead{color:var(--muted);margin:6px 0 18px}
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(15,23,42,.06);margin-bottom:16px}
+    .checkbox{display:flex;gap:10px;align-items:center}
+    label{font-weight:600}
+    input[type="text"]{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef}
+    button{background:var(--accent);color:white;padding:10px 14px;border:0;border-radius:8px;font-weight:700;cursor:pointer}
+    ul{margin:8px 0 0;padding-left:18px;color:var(--muted)}
+    .two-col{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:760px){.two-col{grid-template-columns:1fr 330px}}
+    .small{font-size:.9rem;color:var(--muted)}
+    footer{padding:18px;text-align:center;color:var(--muted);font-size:.9rem}
+    .ad{border:1px dashed #d1d5db;padding:14px;border-radius:8px;text-align:center;background:#fff}
+    .affiliate{display:block;background:#0b63d660;color:var(--card);padding:10px;border-radius:8px;text-decoration:none;font-weight:700;text-align:center;margin-top:10px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Prize Check — Quickly verify a prize message</h1>
+      <p class="lead">Not sure whether a “You won!” message is real? Paste the message or sender details below and we’ll give you clear next steps to stay safe.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="two-col">
+      <section class="card">
+        <h2>Check your prize message</h2>
+        <p class="small">Paste the full message, sender email/phone, or website link. This is a basic automated check — follow the guidance below for anything suspicious.</p>
+        <form id="checkForm" onsubmit="return analyze();">
+          <label for="msg">Message or link</label>
+          <input id="msg" type="text" placeholder="Example: 'Congratulations! You won $5,000. Click http://example.com/claim'">
+          <div style="height:12px"></div>
+          <button type="submit">Analyze message</button>
+        </form>
+
+        <div id="result" style="margin-top:14px;display:none" class="small"></div>
+
+        <hr style="margin:18px 0">
+        <h3>What to do if it’s a scam</h3>
+        <ul>
+          <li>Do not click unknown links or pay fees to claim a prize.</li>
+          <li>Do not share personal details or banking info.</li>
+          <li>Report the message to your platform and local consumer protection agency.</li>
+        </ul>
+
+        <div style="margin-top:12px" class="ad">
+          <!-- AD PLACEHOLDER: Replace with your ad network code (e.g., Google AdSense) -->
+          Advertisement
+        </div>
+
+        <p style="margin-top:12px" class="small">If you want extra protection, consider a reputable identity-protection plan.</p>
+        <!-- Affiliate link example: replace URL with your affiliate link -->
+        <a class="affiliate" href="https://example-identity-affiliate.com/?ref=YOURID" target="_blank" rel="noopener noreferrer">Get identity protection — special offer</a>
+      </section>
+
+      <aside class="card">
+        <h3>Quick indicators of a scam</h3>
+        <ul>
+          <li>Unexpected prize from unknown source</li>
+          <li>Requests for payment or “processing fee”</li>
+          <li>Pressure to act immediately</li>
+          <li>Sender asks for bank details or copies of ID</li>
+        </ul>
+
+        <hr>
+        <h4>Free resources</h4>
+        <p class="small">Sign up for our newsletter for scam warnings and a free checklist:</p>
+        <form id="emailForm" onsubmit="return signup();">
+          <input id="email" type="text" placeholder="you@domain.com">
+          <div style="height:8px"></div>
+          <button type="submit">Join newsletter</button>
+        </form>
+
+        <div style="margin-top:14px" class="ad">
+          <!-- SMALL AD / PROMO -->
+          Sponsored content
+        </div>
+      </aside>
+    </div>
+
+    <section class="card small" style="margin-top:12px">
+      <h3>How this site makes money (transparent)</h3>
+      <p class="small">This site displays ads, includes affiliate links to trusted services, and offers premium guides. We never sell personal data — see privacy below.</p>
+      <h4>Privacy & legal</h4>
+      <p class="small">We provide informational guidance only. We are not a law firm. By using this page you agree to our <a href="#" onclick="alert('Privacy placeholder')">Privacy Policy</a>.</p>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Prize Check — Built to help people avoid scams
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    function analyze(){
+      const msg = document.getElementById('msg').value.trim().toLowerCase();
+      const r = document.getElementById('result');
+      r.style.display = 'block';
+      if(!msg){ r.textContent = 'Enter a message or link to check.'; return false; }
+      // Simple heuristic checks (add server-side checks for production)
+      const indicators = [];
+      if(msg.includes('congrat') || msg.includes('you won') || msg.includes('prize')) indicators.push('Mentions prize/winning — verify sender.');
+      if(msg.includes('click') || msg.includes('http') || msg.includes('www.')) indicators.push('Contains a link — do not click if sender unknown.');
+      if(msg.includes('fee') || msg.includes('processing') || msg.includes('pay')) indicators.push('Requests payment — likely scam.');
+      if(msg.includes('urgent') || msg.includes('act now')) indicators.push('Pressure language — possible scam.');
+
+      if(indicators.length===0){ r.innerHTML = '<strong>Likely safe</strong> — but still verify sender and never give banking info.'; }
+      else { r.innerHTML = '<strong>Warning</strong>:<br>' + indicators.map(i=>'• '+i).join('<br>') + '<br><br>Recommended next step: do not click links, block sender, and check with official company channels.'; }
+      return false;
+    }
+
+    function signup(){
+      const email = document.getElementById('email').value.trim();
+      if(!email || !/@/.test(email)){ alert('Please enter a valid email'); return false; }
+      // In production: send to your email marketing provider API
+      alert('Thanks — newsletter signup simulated. Implement actual signup with MailerLite/Mailchimp API.');
+      document.getElementById('email').value = '';
+      return false;
+    }
+  </script>
+</body>
+</html>
